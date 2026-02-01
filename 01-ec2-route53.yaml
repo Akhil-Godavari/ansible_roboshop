@@ -40,7 +40,7 @@
   - name: Create Route 53
     amazon.aws.route53:
       state: present
-      zone: "{{ zone_id }}"
+      zone: "{{ domain_name }}"
       record: "{{ item.item }}.{{ domain_name }}" #mongodb.galpalfan.shop
       type: A
       ttl: 1
