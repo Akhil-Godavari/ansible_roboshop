@@ -20,22 +20,32 @@
     loop: "{{ instance }}"
     register: ec2_output
 
-  - name: Printing the ec2_output
-    ansible.builtin.debug:
-      msg: "This is the ec2 instance output: {{ ec2_output }}"
+  # - name: Printing the ec2_output
+  #   ansible.builtin.debug:
+  #     msg: "This is the ec2 instance output: {{ ec2_output }}"
 
-  - name: Printing the Public IP Address
-    ansible.builtin.debug: 
-      msg: "The Public IP: {{ item.instances[0].public_ip_address }}"
-    register: public_ip
-    loop: "{{ ec2_output.results }}"
+  # - name: Printing the Public IP Address
+  #   ansible.builtin.debug: 
+  #     msg: "The Public IP: {{ item.instances[0].public_ip_address }}"
+  #   register: public_ip
+  #   loop: "{{ ec2_output.results }}"
     
 
-  - name: Printing the Private IP Address
-    ansible.builtin.debug: 
-      msg: "The Private IP: {{ item.instances[0].private_ip_address }}"
-    register: private_ip
-    loop: "{{ ec2_output.results }}"
-  
+  # - name: Printing the Private IP Address
+  #   ansible.builtin.debug: 
+  #     msg: "The Private IP: {{ item.instances[0].private_ip_address }}"
+  #   register: private_ip
+  #   loop: "{{ ec2_output.results }}"
+
+  - name: Create Route 53
+    amazon.aws.route53:
+      state: present
+      zone: "{{ zone_id }}"
+      record: "{{ item.item }}.{{ domain_name }}" #mongodb.galpalfan.shop
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].private_ip_address }}"
+      overwrite: true
+    loop: "{{ ec2_output.results }}" 
     
       
