@@ -1,0 +1,25 @@
+- name: Creating EC2 Instance and Route 53 for Roboshop Project
+  hosts: local
+  connection: local
+  vars:
+    ami_id: "ami-0220d79f3f480ecf5"
+    sg_id: "sg-07334aa1e4d5db742"
+    zone_id: "Z05259801MNLU7MO980U2"
+    domain_name: "galpalfan.shop"
+    instance: 
+    - mongodb
+  tasks:
+  - name: Create EC2 Instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      instance_type: t3.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
+        Name: "{{ item }}"
+    loop: "{{ instance }}"
+    register: ec2_output
+
+  - name: Printing the ec2_output
+    ansible.builtin.debug:
+      msg: "This is the ec2 instance output: {{ ec2_output }}"
