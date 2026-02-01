@@ -27,13 +27,15 @@
   - name: Printing the Public IP Address
     ansible.builtin.debug: 
       msg: "The Public IP: {{ item.instances[0].public_ip_address }}"
-    loop: "{{ ec2_output.results }}"
     registe: public_ip
+    loop: "{{ ec2_output.results }}"
+    
 
   - name: Printing the Private IP Address
     ansible.builtin.debug: 
       msg: "The Private IP: {{ item.instances[0].private_ip_address }}"
-    loop: "{{ ec2_output.results }}"
     register: private_ip
+    loop: "{{ ec2_output.results }}"
+  
     
       
