@@ -39,7 +39,7 @@
 
   - name: Install Dependencies
     community.general.npm:
-      name: /app
+      path: /app
 
   - name: Copy Catalogue Services
     ansible.builtin.copy:
