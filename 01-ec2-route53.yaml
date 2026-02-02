@@ -8,6 +8,9 @@
     domain_name: "galpalfan.shop"
     instance: 
     - mongodb
+    - redis
+    - mysql
+    - rabbitmq
   tasks:
   - name: Create EC2 Instance
     amazon.aws.ec2_instance:
@@ -48,4 +51,3 @@
       overwrite: true
     loop: "{{ ec2_output.results }}" 
     
-      
