@@ -3,12 +3,12 @@
   become: yes
   tasks:
   - name: Copy MongoDB Repo
-    anisble.builtin.copy:
+    ansible.builtin.copy:
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
   
   - name: Installing MongoDB Package
-    anisble.builtin.package:
+    ansible.builtin.package:
       name: mongodb-org
       state: present
 
