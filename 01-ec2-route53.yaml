@@ -6,8 +6,8 @@
     sg_id: "sg-07334aa1e4d5db742"
     zone_id: "Z05259801MNLU7MO980U2"
     domain_name: "galpalfan.shop"
-    instance: 
     # we can pass instannces via command line using -e
+    #instance: 
     # - mongodb
     # - redis
     # - mysql
