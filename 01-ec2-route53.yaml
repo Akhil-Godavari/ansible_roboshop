@@ -7,7 +7,7 @@
     zone_id: "Z05259801MNLU7MO980U2"
     domain_name: "galpalfan.shop"
     # we can pass instannces via command line using -e
-    #instance: 
+    #instances: 
     # - mongodb
     # - redis
     # - mysql
