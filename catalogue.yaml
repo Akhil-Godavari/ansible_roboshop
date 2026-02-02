@@ -1,0 +1,5 @@
+- name: Set up of Catalogue Server
+  hosts: catalogue
+  become: yes
+  tasks:
+  - name: 

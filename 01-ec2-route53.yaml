@@ -7,10 +7,11 @@
     zone_id: "Z05259801MNLU7MO980U2"
     domain_name: "galpalfan.shop"
     instance: 
-    - mongodb
-    - redis
-    - mysql
-    - rabbitmq
+    # we can pass instannces via command line using -e
+    # - mongodb
+    # - redis
+    # - mysql
+    # - rabbitmq
   tasks:
   - name: Create EC2 Instance
     amazon.aws.ec2_instance:
