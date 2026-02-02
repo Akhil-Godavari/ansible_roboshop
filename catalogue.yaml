@@ -56,17 +56,20 @@
       name: mongodb-mongosh
       state: present
 
-  # - name: connect to mongodb catalogue
-  #   ansible.builtin.command: mongosh mongodb.galpalfan.shop --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
-  #   register: catalogue_output
-
-  - name: Evaluate Catalogue database
-    community.mongodb.mongodb_shell:
-      login_host: mongodb.galpalfan.shop
-      eval: "db.getMongo().getDBNames().indexOf('catalogue')"
+  - name: connect to mongodb catalogue
+    ansible.builtin.command: mongosh mongodb.galpalfan.shop --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
     register: catalogue_output
 
-  - name: Print the catalogue
-    ansible.builtin.debug:
-      msg: "{{ catalogue_output }}"
+  # - name: Evaluate Catalogue database
+  #   community.mongodb.mongodb_shell:
+  #     login_host: mongodb.galpalfan.shop
+  #     eval: "db.getMongo().getDBNames().indexOf('catalogue')"
+  #   register: catalogue_output
+
+  # - name: Print the catalogue
+  #   ansible.builtin.debug:
+  #     msg: "{{ catalogue_output }}"
   
+  - name: Load Products int MongoDB
+    ansible.builtin.shell: mongosh --host mongodb.galpalfan.shop </app/db/master-data.js
+    when: catalogue_output.stdout < 0
