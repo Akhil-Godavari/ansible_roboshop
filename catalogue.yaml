@@ -62,8 +62,9 @@
 
   - name: Evaluate Catalogue database
     community.mongodb.mongodb_shell:
-    login_host: mongodb.galpalfan.shop
+      login_host: mongodb.galpalfan.shop
       eval: "db.getMongo().getDBNames().indexOf('catalogue')"
+    register: catalogue_output
 
   - name: Print the catalogue
     ansible.builtin.debug:
