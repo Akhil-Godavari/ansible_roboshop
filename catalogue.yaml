@@ -2,4 +2,36 @@
   hosts: catalogue
   become: yes
   tasks:
-  - name: 
+  - name: Disable the default nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: Enable the redis 7
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: Install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+  - name: create usersystem roboshop
+    ansible.builtin.user: 
+      name: roboshop
+      comment: Roboshop System User
+      system: true
+      shell: /sbin/nologin
+      home: /app
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: Download catalogue application
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+      dest: /tmp/catalogue.zip
+
+  - name: Extract catalogue application
+    ansible.builtin.unarchieve:
+      src: /tmp/catalogue.zip
+      dest: /app
