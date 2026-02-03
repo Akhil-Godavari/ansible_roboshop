@@ -46,10 +46,11 @@
       src: cart.service
       dest: /etc/systemd/system/cart.service
 
-  - name: Start and Enable Services
-    ansible.builtin.service:
+  - name: Daemon Reload Start and Enable Cart
+    ansible.builtin.systemd_service:
       name: cart
       state: started
       enabled: yes
+      daemon_reload: true
 
   

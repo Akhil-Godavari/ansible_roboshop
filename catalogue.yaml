@@ -20,11 +20,22 @@
       system: true
       shell: /sbin/nologin
       home: /app
+## It is safe to delete the file, if it exist because if any changes made will be relecting
+
+  - name: Delete /app directory if exist
+    ansible.builtin.file:
+      path: /app
+      state: absent
 
   - name: Create a directory if it does not exist
     ansible.builtin.file:
       path: /app
       state: directory
+
+    - name: Delete catalogue file if exist
+    ansible.builtin.file:
+      path: /tmp/catalogue.zip
+      state: absent
 
   - name: Download catalogue application
     ansible.builtin.get_url:
@@ -74,8 +85,9 @@
     ansible.builtin.shell: mongosh --host mongodb.galpalfan.shop </app/db/master-data.js
     when: catalogue_output.stdout | int < 0
 
-  - name: Start and Enable Catalogue
-    ansible.builtin.service:
+  - name: Daemon Reload Start and Enable Catalogue
+    ansible.builtin.systemd_service:
       name: catalogue
       state: started
       enabled: yes
+      daemon_reload: true
