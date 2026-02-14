@@ -7,11 +7,18 @@
     zone_id: "Z05259801MNLU7MO980U2"
     domain_name: "galpalfan.shop"
     # we can pass instannces via command line using -e
-    #instances: 
-    # - mongodb
-    # - redis
-    # - mysql
-    # - rabbitmq
+    instances: 
+    - mongodb
+    - redis
+    - mysql
+    - rabbitmq
+    - catalogue
+    - cart
+    - user
+    - shipping
+    - payment
+    - frontend
+
   tasks:
   - name: Create EC2 Instance
     amazon.aws.ec2_instance:
@@ -21,7 +28,7 @@
       image_id: "{{ ami_id }}"
       tags:
         Name: "{{ item }}"
-    loop: "{{ instance }}"
+    loop: "{{ instances }}"
     register: ec2_output
 
   # - name: Printing the ec2_output
