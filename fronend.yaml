@@ -23,6 +23,11 @@
     ansible.builtin.file:
       path: /usr/share/nginx/html/
       state: absent  
+  
+  - name: creat html directory
+    ansible.builtin.file:
+      path: /usr/share/nginx/html/
+      state: present 
 
   - name: Download frontend application
     ansible.builtin.get_url:
@@ -32,8 +37,13 @@
   - name: Extract cart application
     ansible.builtin.unarchive:
       src: /tmp/frontend.zip
-      dest: /app
+      dest: /usr/share/nginx/html
       remote_src: yes
+
+  - name: delete default nginx.cong file
+    ansible.builtin.file:
+      state: absent
+      path: /etc/nginx/nginx.conf
 
   - name: Create nginx configuration
     ansible.builtin.copy:
@@ -43,4 +53,5 @@
   - name: Start the Services
     ansible.builtin.service:
       name: nginx
-      state: started
+      state: restarted
+      enabled: yes

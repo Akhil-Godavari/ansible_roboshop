@@ -1,0 +1,67 @@
+- name: Set up of Payment Server
+  hosts: payment
+  become: yes
+  tasks:
+  - name: Install Python packages
+    ansible.builtin.dnf:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - python3 
+    - gcc
+    - python3-devel
+
+  - name: create usersystem roboshop
+    ansible.builtin.user: 
+      name: roboshop
+      comment: Roboshop System User
+      system: true
+      shell: /sbin/nologin
+      home: /app
+## It is safe to delete the file, if it exist because if any changes made will be relecting
+
+  - name: Delete /app directory if exist
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: Delete payment file if exist
+    ansible.builtin.file:
+      path: /tmp/payment.zip
+      state: absent
+
+  - name: Download payment application
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
+      dest: /tmp/payment.zip
+
+  - name: Extract payment application
+    ansible.builtin.unarchive:
+      src: /tmp/payment.zip
+      dest: /app
+      remote_src: yes
+
+  - name: Install specified python requirements
+    ansible.builtin.pip:
+      requirements: requirements.txt
+      executable: pip3.9
+    args:
+      chdir: /app
+
+  - name: Copy payment Services
+    ansible.builtin.copy:
+      src: payment.service
+      dest: /etc/systemd/system/payment.service
+
+  - name: Daemon Reload Start and Enable payment
+    ansible.builtin.systemd_service:
+      name: payment
+      state: started
+      enabled : yes
+      daemon_reload: true
+
